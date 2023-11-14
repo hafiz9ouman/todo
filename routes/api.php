@@ -23,6 +23,7 @@ Route::get('/logout', [APIController::class, 'logout']);
 Route::group(['middleware'=> 'auth:api'], function(){
     Route::post('/create', [APIController::class, 'create']);
     Route::post('/update', [APIController::class, 'update']);
+    Route::get('/delete/{id}', [APIController::class, 'delete']);
     Route::get('/view', [APIController::class, 'get_todos']);
 });
 

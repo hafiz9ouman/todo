@@ -194,7 +194,8 @@ class APIController extends Controller
         ]);
     }
 
-    public function delete(Request $req){
+    public function delete($id){
+        $todo_id = $id;
         // check auth
         if(!auth('api')->user()){
             return response()->json([
@@ -202,17 +203,8 @@ class APIController extends Controller
             ]);
         }
 
-        // validation
-        $validator = Validator::make($req->all(), [
-            'todo_id' => 'required',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
-
         // check the existance of todo in DB
-        $exist =DB::table('todos')->where('id', $req->todo_id)->first();
+        $exist =DB::table('todos')->where('id', $todo_id)->first();
         if(!$exist){
             return response()->json([
                 'message' => 'Todo Not Found'
@@ -226,7 +218,7 @@ class APIController extends Controller
         }
 
         // Delete Todo
-        DB::table('todos')->where('id', $req->todo_id)->delete();
+        DB::table('todos')->where('id', $todo_id)->delete();
 
         return response()->json([
             'message' => 'Todo Deleted Successfully'
